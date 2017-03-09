@@ -32,7 +32,6 @@ var source=document.getElementById("source");
 var resort=document.getElementById("resort");
 var btn=document.getElementById("sort-btn");
 var data=[];
-window.onload=function(){getData()}
 function getData() {
      var list=source.getElementsByTagName("li")//获取source下的li标签;
 	 for(var i=0;i<list.length;i++){
@@ -67,7 +66,7 @@ function render(data) {
 	 var num=["第一名：","第二名：","第三名：","第四名：","第五名：","第六名：","第七名："];
 	 var c=[];
 	//<li>"+data[k][0]+"空气质量"+"<b>"+data[k][1]+"</b>"+"</li>
-	  for(var i=0;i<data.length/2;i++){
+	  for(var i=0;i<data.length;i++){
 		var b="<li>"+num[i]+data[i][0]+"空气质量："+"<b>"+data[i][1]+"</b>"+"</li>";
 		c.push(b);
 		resort.innerHTML=c;
