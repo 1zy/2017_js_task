@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+*{
+	margin:0;
+	padding:0;
+}
+  #importation{
+	  width:300px;
+	  height:20px;
+	  padding:10px;
+	  border:1px solid #999;
+  }
+  input[type="button"]{
+	  border-radius:10px;
+	  display:inline-block;
+	  padding:5px 20px;
+	  background:none;
+	  border:1px solid #999;
+	  margin-left:20px;
+  }
+  #left_out{
+	  margin-left:60px;
+  }
+  .item{
+	  background:#F00;
+	  color:#fff;
+	  font-size:20px;
+	  font-family:"微软雅黑";
+	  margin:20px 10px;
+	  display:inline-block;
+	  padding:10px 20px;
+	  }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+   <form>
+      <input id="importation"  type="text"/>
+      <input id="left_in"  type="button" value="左侧人" />
+      <input id="right_in" type="button"  value="右侧入"/>
+      <input id="left_out" type="button"  value="左侧出"/>
+      <input id="right_out" type="button"  value="右侧出"/>
+      <ul id="ull">
+         
+      </ul>
+   </form>
+   <script>
+      window.onload=function(){
+		  /*获取元素*/
+		  var importation=document.getElementById("importation");
+		  var left_in=document.getElementById("left_in");
+		  var right_in=document.getElementById("right_in");
+		  var left_out=document.getElementById("left_out");
+		  var right_out=document.getElementById("right_out");
+		  var ull=document.getElementById("ull");
+		  var lis=document.getElementsByTagName("li");
+		  
+		  //左侧入的点击事件
+		    left_in.onclick=function(){
+				var li=document.createElement("li");  //创建一个html标签li
+				li.innerHTML=importation.value;       //获取input中的值并将其传入到li中
+				li.className="item";                  //为创建的li添加class类（如果设置样式时直接用li设置则可不加）
+				ull.insertBefore(li,ull.childNodes[0]);  //insertBefore可在已有的子节点前插入一个新的子节点;将新创建的li放到已有的第一个li中
+				importation.value="";                   //每次点击后将input中对的值清空
+				}
+			right_in.onclick=function(){
+				var li=document.createElement("li");
+				li.innerHTML=importation.value;
+				li.className="item";
+				ull.appendChild(li);
+				importation.value="";
+				}
+			left_out.onclick=function(){
+				alert(ull.firstChild.innerHTML); //点击后弹出第一个元素的值
+				ull.removeChild(ull.firstChild); //removeChild从子节点列表中删除某个节点。删除ull的第一个节点
+				
+				}	
+			right_out.onclick=function(){
+				alert(ull.lastChild.innerHTML);
+				ull.removeChild(ull.lastChild);
+				}
+			
+			for(var i=0;i<lis.length;i++){      //遍历每一个li给每个li加上点击事件，当点击时删除该节点
+				lis[i].onclick=function(){
+				ull.removeChild(ull.childNodes[i])
+					}
+				}
+		  }
+   </script>
+</div>
+</body>
+</html>
