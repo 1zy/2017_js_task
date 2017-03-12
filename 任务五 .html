@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+*{
+	margin:0;
+	padding:0;
+}
+  #importation{
+	  width:300px;
+	  height:20px;
+	  padding:10px;
+	  border:1px solid #999;
+	 
+  }
+  input[type="button"]{
+	  border-radius:10px;
+	  display:inline-block;
+	  padding:5px 20px;
+	  background:none;
+	  border:1px solid #999;
+	  margin-left:20px;
+  }
+  #ull{
+	   display:flex;
+	   align-items:flex-end;
+  }
+  #left_out{
+	  margin-left:60px;
+  }
+  .item{
+	  width:50px;
+	  background:#F00;
+	  margin:0 10px;
+	  display:inline-block;
+	  margin-top:100px;
+	  list-style:none;
+	  }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+   <form>
+      <input id="importation"  type="text"/>
+      <input id="left_in"  type="button" value="左侧人" />
+      <input id="right_in" type="button"  value="右侧入"/>
+      <input id="left_out" type="button"  value="左侧出"/>
+      <input id="right_out" type="button"  value="右侧出"/>
+      <input id="sott"  type="button" value="排列" />
+      <ul id="ull">
+      </ul>
+   </form>
+   <script>
+		  /*获取元素*/
+		  var importation=document.getElementById("importation");
+		  var left_in=document.getElementById("left_in");
+		  var right_in=document.getElementById("right_in");
+		  var left_out=document.getElementById("left_out");
+		  var right_out=document.getElementById("right_out");
+		  var ull=document.getElementById("ull");
+		  var sott=document.getElementById("sott");
+		  var data=[];
+		 
+		    //左侧入的点击事件
+
+		    left_in.onclick=function(){
+				if(ull.childNodes.length<=60){                           //当ull子元素的长度小于60时执行以下代码
+			     	if(importation.value>10&&importation.value<100){     //如果importation.value中有输入一个数那么执行以下带代码
+						 var li=document.createElement("li");            //创建一个html标签li
+					     // li.innerHTML=importation.value;              //获取input中的值并将其传入到li中
+						 li.className="item";                            //为创建的li添加class类（如果设置样式时直接用li设置则可不加）
+						 li.style.height=importation.value+"px";         //将importation.value的值设置成li的高
+						 ull.insertBefore(li,ull.childNodes[0]);         //insertBefore可在已有的子节点前插入一个新的子节点;将新创建的li放到已有的第一个li中
+						 data.push(importation.value);                   //将importation.value传入到data数组中为排序准备
+						 importation.value="";                          //每次点击后将input中对的值清空
+						 
+				    } else{
+						 alert("请输入10~100之间的数");                      
+						 } 
+				}else{
+					alert("最多输入60个人数");
+				}
+			}
+			right_in.onclick=function(){
+				if(ull.childNodes.length<=60){
+				    if(importation.value>10&&importation.value<100){  
+					    var li=document.createElement("li");
+					     //li.innerHTML=importation.value;
+					   li.style.height=importation.value+"px";
+					   li.className="item";
+					   ull.appendChild(li);
+					   data.push(importation.value);
+					   importation.value="";
+					   }else{
+						    alert("请输入10~100之间的数");
+						}
+				}else{
+					alert("最多输入60个人数");
+					}
+			}
+			
+			left_out.onclick=function(){
+				ull.removeChild(ull.firstChild); //removeChild从子节点列表中删除某个节点。删除ull的第一个节点
+				}	
+			right_out.onclick=function(){
+				ull.removeChild(ull.lastChild);
+				
+			}
+		
+	      function init(){
+			  ull.addEventListener("click", function (e) {      //给ull一个监听点击事件
+				  if(e.target && e.target.nodeName == 'LI'){    //target 事件属性可返回事件的目标节点如果点击的对象是li
+				  ull.removeChild(e.target);
+				  }
+				});
+		     sott.onclick=function(){     //sort将data数组中的数排序
+				data.sort(function(a,b){
+					return a-b;
+					})
+			 for(var i=0;i<data.length;i++){
+				 ull.childNodes[i].style.height=data[i]+"px"; //将数组中的值赋值
+				 }
+			}
+		}
+		init();
+   </script>
+</div>
+</body>
+</html>
