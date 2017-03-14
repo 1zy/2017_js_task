@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+*{
+	margin:0;
+	padding:0;
+}
+  #importation{
+	  width:250px;
+	  height:20px;
+	  padding:5px;
+	  border:1px solid #999;
+  }
+  input[type="button"],#search_btn{
+	  border-radius:10px;
+	  display:inline-block;
+	  padding:5px 10px;
+	  background:none;
+	  border:1px solid #999;
+	  margin-left:10px;
+	  position:relative;
+	  top:-10px;
+  }
+  #left_out{
+	  margin-left:30px;
+  }
+  .item{
+	  background:#F00;
+	  color:#fff;
+	  font-size:20px;
+	  font-family:"微软雅黑";
+	  margin:20px 10px;
+	  display:inline-block;
+	  padding:10px 20px;
+	  }
+
+ #search{ 
+	width:200px;
+	height:20px;
+	padding:5px;
+	position:relative;
+	top:-10px;
+}
+#search_btn{
+	margin-left:30px;
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+   <form>
+      <textarea id="importation"> </textarea>
+      <input id="left_in"  type="button" value="左侧人" />
+      <input id="right_in" type="button"  value="右侧入"/>
+      <input id="left_out" type="button"  value="左侧出"/>
+      <input id="right_out" type="button"  value="右侧出"/>
+      <input type="text" id="search" />
+      <input type="button" id="search_btn" value="搜索" />
+     
+      <ul id="ull">
+      
+      </ul>
+   
+   </form>
+   <script>
+		  /*获取元素*/
+		  var importation=document.getElementById("importation");
+		  var left_in=document.getElementById("left_in");
+		  var right_in=document.getElementById("right_in");
+		  var left_out=document.getElementById("left_out");
+		  var right_out=document.getElementById("right_out");
+		  var searchs=document.getElementById("search");
+		  var search_btn=document.getElementById("search_btn");
+		  var ull=document.getElementById("ull");
+		  
+		  //左侧入的点击事件
+		  function textCheck(textarea) {
+				var data = textarea.value;
+				data = data.replace(/(,|，|、|\s|\r\n)/g, " "); //将所有内容分割格式转换为空格。
+				data = data.replace(/^\s*/, ""); //将最左边所有空格消除
+				data = data.replace(/\s*$/, ""); //将最右边所有空格消除
+				data = data.replace(/\s{2,}/g, " "); //将中间出现两次以上空格换成一次空格。
+				data = data.split(" "); //将处理好的字符串以空格分割成数组。
+			    return data; //返回处理好的数组
+	   }
+		    left_in.onclick=function(){
+			     if(importation.value!=" "){                          
+				    var ds=textCheck(importation);    //将importation所形成的数组赋值给ds
+					  for(var i=0;i<ds.length;i++){     
+							  var li=document.createElement("li");  //创建一个html标签li
+							  li.innerHTML=ds[i];                    //获取input中的值并将其传入到li中
+							  li.className="item";                  //为创建的li添加class类（如果设置样式时直接用li设置则可不加）
+							  ull.insertBefore(li,ull.childNodes[0]);  //insertBefore可在已有的子节点前插入一个新的子节点;将新创建的li放到已有的第一个li中
+							  importation.value=" ";                   //每次点击后将input中对的值清空
+							 }
+				   }else{
+					   alert("请输入一个数")
+				      }
+			}
+			
+			right_in.onclick=function(){
+				 if(importation.value!=" "){
+					 var ds=textCheck(importation);
+					     for(var i=0;i<ds.length;i++){
+							var li=document.createElement("li");
+							li.innerHTML=ds[i]
+							li.className="item";
+							ull.appendChild(li);
+							importation.value=" ";
+							}
+					  }else{
+					       alert("请输入一个数")
+					}
+			}
+			
+			left_out.onclick=function(){
+				alert(ull.firstChild.innerHTML); //点击后弹出第一个元素的值
+				ull.removeChild(ull.firstChild); //removeChild从子节点列表中删除某个节点。删除ull的第一个节点
+				
+				}	
+			right_out.onclick=function(){
+				alert(ull.lastChild.innerHTML);
+				ull.removeChild(ull.lastChild);
+				}
+		
+		   function init(){
+			     ull.addEventListener("click",function(e){      // 给ull一个点击的监听事件
+					    if(e.target && e.target.nodeName=="LI"){
+							ull.removeChild(e.target);
+							}
+					 
+					 })
+		   }
+		   search_btn.addEventListener("click",function(){
+			   var searchsValue=searchs.value;
+			     for(var i=0;i<ull.childNodes.length;i++){
+					 var RE=ull.childNodes[i].innerHTML.toLowerCase();//toLowerCase()使其不区分大小写
+					 var SE=searchsValue.toLowerCase();
+					 if(RE.search(SE)!=-1){        //检索字符串制定的子字符串，或者检索与正则表达式相匹配的子字符串,如果没有找到任何匹配的子串，则返回-1；
+						 ull.childNodes[i].style.background="blue";
+						 }else{
+					     ull.childNodes[i].style.color = "";
+				         ull.childNodes[i].style.background = "";
+					 }
+			   
+			   }
+			   })
+		   
+	      init();
+   </script>
+</div>
+</body>
+</html>
