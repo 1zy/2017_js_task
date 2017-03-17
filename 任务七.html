@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+div{
+	display:inline-block;
+	padding:50px;
+	border:2px solid #999;
+	background:#FFF;
+}
+#wrap{
+	margin:30px 500px;
+}
+form{
+	margin-left:500px;
+}
+input[type="button"]{
+	padding:20px 30px;
+	margin-left:310px;
+	}
+#preOrder:hover{
+	background:red;
+}
+#midOrder:hover{
+	background:blue;
+}
+#backOrder:hover{
+	background:green;
+}
+</style>
+</head>
+
+<body>
+   <div id="wrap">
+      <div id="container" >
+          <div>
+              <div></div>
+              <div></div>
+          </div>
+          <div>
+              <div></div>
+              <div></div>
+          </div>
+      </div>
+      <div>
+          <div>
+              <div></div>
+              <div></div>
+          </div>
+          <div>
+              <div></div>
+              <div></div>
+          </div>
+      </div>
+   </div>
+   <form>
+      <input type="button" id="pre" value="前序排列" />
+      <input type="button" id="mid" value="中序排列" />
+      <input type="button" id="back" value="后序排列" />
+   </form>
+  <script>
+      var g=function(id){//使获取元素更方便
+		  return document.getElementById(id);
+		  }
+	  
+	  var nodes=[];
+	  var pl=false;//nodes用于存储节点，pl用于判断
+	  
+	   var wrap=g("wrap");
+	   var color=["red","blue","green"];
+	   
+	   g("pre").onclick=function(){//pre点击时调用  preOrder,starOrder函数
+		    preOrder(wrap);
+			starOrder(color[0]);
+		   }
+		   
+	  g("mid").onclick=function(){
+		    midOrder(wrap);
+			starOrder(color[1]);
+		  }
+		  
+	 g("back").onclick=function(){
+		    backOrder(wrap);
+			starOrder(color[2]);
+		  }
+	  
+	  
+	  function preOrder(node){//前序排列
+		if (node) {
+			nodes.push(node);
+			preOrder(node.firstElementChild);
+			preOrder(node.lastElementChild);
+		}
+	}
+	function midOrder(node){//中序排列
+		   if(node){
+			   midOrder(node.firstElementChild);
+			   nodes.push(node);
+			   midOrder(node.lastElementChild);
+			   }
+		}
+		
+	  function backOrder(node){//后序排列
+		  if(node){
+			  backOrder(node.firstElementChild);
+			  backOrder(node.lastElementChild);
+			  nodes.push(node);
+			  }
+		  }
+	 function starOrder(color){
+		if(pl){    //防止遍历被打断
+			alert("正在遍历");
+			return;
+			}
+		pl=true; //遍历开始时让pl为true
+		var i=0;
+		nodes[i].style.background=color;//当节点数为0时所有的节点背景为白色；
+		var starNode=setInterval(function(){
+			i++//每隔0.5秒i+1
+			if(i>=nodes.length){
+				clearInterval(starNode)//如果i>nodes的长度那么停止计时器的使用
+				nodes[nodes.length-1].style.background="#fff"  //上一个元素的背景让其为白色
+				pl=false
+				nodes=[];   //每一次结束后让数组为空，以免影响下一次的遍历  
+				return ;
+				}
+			nodes[i-1].style.background="#fff";
+			nodes[i].style.background=color;	
+		    
+			},500);
+		}
+     
+  </script>
+</body>
+</html>
